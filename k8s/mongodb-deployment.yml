@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment-node
+  namespace: node-react-k8s
+  labels:
+    app: mongodb-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-node
+  template:
+    metadata:
+      labels:
+        app: mongodb-node
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:6.0.15
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 256Mi
+              cpu: 200m
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret-node
+                  key: mongo-root-username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret-node
+                  key: mongo-root-password
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc-node
