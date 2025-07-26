@@ -26,8 +26,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd <your-project-name>
+git clone https://github.com/hilalahmad0101/react-node-on-k8s.git
+cd react-node-on-k8s
 ```
 
 ### 2. Verify Kubernetes Cluster
